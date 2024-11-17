@@ -21,8 +21,7 @@ pub fn readChar(lexer: *Lexer) void {
 }
 
 pub fn NextToken(lexer: *Lexer) Token {
-    readChar(lexer);
-    return switch (lexer.ch) {
+    const tok = switch (lexer.ch) {
         '=' => newToken(TokenType.ASSIGN, lexer.ch),
         '+' => newToken(TokenType.PLUS, lexer.ch),
         '(' => newToken(TokenType.LPAREN, lexer.ch),
@@ -31,11 +30,15 @@ pub fn NextToken(lexer: *Lexer) Token {
         '}' => newToken(TokenType.RBRACE, lexer.ch),
         ',' => newToken(TokenType.COMMA, lexer.ch),
         ';' => newToken(TokenType.SEMICOLON, lexer.ch),
+        0 => newToken(TokenType.EOF, lexer.ch),
         else => {
             std.debug.print("Could not map character {c} from {s}\n", .{ lexer.ch, lexer.input });
             unreachable;
         },
     };
+
+    readChar(lexer);
+    return tok;
 }
 
 fn newToken(tokenType: TokenType, ch: u8) Token {
@@ -43,7 +46,7 @@ fn newToken(tokenType: TokenType, ch: u8) Token {
 }
 
 pub fn New(input: []const u8) Lexer {
-    const lexer = Lexer{ .input = input, .position = 0, .readPosition = 0, .ch = 0 };
-    //readChar(&lexer);
+    var lexer = Lexer{ .input = input, .position = 0, .readPosition = 0, .ch = 0 };
+    readChar(&lexer);
     return lexer;
 }

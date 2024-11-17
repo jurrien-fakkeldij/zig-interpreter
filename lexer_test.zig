@@ -21,6 +21,7 @@ test "Next Token" {
         expectedObj{ .expectedType = TokenType.RBRACE, .expectedLiteral = '}' },
         expectedObj{ .expectedType = TokenType.COMMA, .expectedLiteral = ',' },
         expectedObj{ .expectedType = TokenType.SEMICOLON, .expectedLiteral = ';' },
+        expectedObj{ .expectedType = TokenType.EOF, .expectedLiteral = 0 },
     };
 
     var l = Lexer.New(input);
